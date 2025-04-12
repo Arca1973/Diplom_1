@@ -1,11 +1,8 @@
 package praktikum;
-
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BunTest {
 
@@ -13,32 +10,47 @@ public class BunTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
-
-        // Создаем объект булочки
+        // Создаем объект булочки перед каждым тестом
         bun = new Bun("Классическая булочка", 50f);
     }
 
     @Test
     public void testGetName() {
         // Проверяем метод getName()
-        assertEquals("Классическая булочка", bun.getName());
+        assertEquals(
+                "Метод getName() должен возвращать корректное название булочки",
+                "Классическая булочка",
+                bun.getName()
+        );
     }
 
     @Test
     public void testGetPrice() {
         // Проверяем метод getPrice()
-        assertEquals(50f, bun.getPrice(), 0.001); // Точность сравнения для float
+        assertEquals(
+                "Метод getPrice() должен возвращать корректную цену булочки",
+                50f,
+                bun.getPrice(),
+                0.001 // Точность сравнения для float
+        );
     }
 
     @Test
     public void testConstructor() {
-        // Проверка конструктора через создание мока
-        Bun mockBun = mock(Bun.class);
-        when(mockBun.getName()).thenReturn("Булочка с кунжутом");
-        when(mockBun.getPrice()).thenReturn(60f);
+        // Проверка корректности создания объекта через конструктор
+        Bun anotherBun = new Bun("Булочка с кунжутом", 60f);
 
-        assertEquals("Булочка с кунжутом", mockBun.getName());
-        assertEquals(60f, mockBun.getPrice(), 0.001);
+        assertEquals(
+                "Конструктор должен корректно инициализировать название булочки",
+                "Булочка с кунжутом",
+                anotherBun.getName()
+        );
+
+        assertEquals(
+                "Конструктор должен корректно инициализировать цену булочки",
+                60f,
+                anotherBun.getPrice(),
+                0.001 // Точность сравнения для float
+        );
     }
 }
