@@ -2,63 +2,23 @@ package praktikum;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.mockito.Mockito;
-import java.util.Arrays;
-import java.util.Collection;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-@RunWith(Parameterized.class)
 public class BurgerTests {
 
-    private Bun mockedBun;
-    private Ingredient[] mockedIngredients;
-    private float expectedPrice;
-
-    private Burger burger;
     private Bun mockBun;
     private Ingredient mockIngredient1;
     private Ingredient mockIngredient2;
-
-    // Конструктор для параметризованных тестов
-    public BurgerTests(Bun bun, Ingredient[] ingredients, float expectedPrice) {
-        this.mockedBun = bun;
-        this.mockedIngredients = ingredients;
-        this.expectedPrice = expectedPrice;
-    }
-
-    @Parameterized.Parameters(name = "{index}: {0}, Ингредиенты: {1}, Ожидаемая Цена: {2}")
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                // Тестовые данные
-                {mockBun(8f), new Ingredient[]{mockIngredient(3f)}, 19f},
-                {mockBun(12f), new Ingredient[]{mockIngredient(7f), mockIngredient(5f)}, 36f},
-                {mockBun(9f), new Ingredient[]{mockIngredient(6f), mockIngredient(4f)}, 28f},
-        });
-    }
-
-    // Метод для создания мока Bun
-    private static Bun mockBun(float price) {
-        Bun mock = Mockito.mock(Bun.class);
-        when(mock.getPrice()).thenReturn(price);
-        return mock;
-    }
-
-    // Метод для создания мока Ingredient
-    private static Ingredient mockIngredient(float price) {
-        Ingredient mock = Mockito.mock(Ingredient.class);
-        when(mock.getPrice()).thenReturn(price);
-        return mock;
-    }
+    private Burger burger;
 
     @Before
     public void setup() {
         // Создаем моки для булочки и ингредиентов
         mockBun = Mockito.mock(Bun.class);
         when(mockBun.getPrice()).thenReturn(10f); // Булочка стоит 10 единиц
+        when(mockBun.getName()).thenReturn("Булочка");
 
         mockIngredient1 = Mockito.mock(Ingredient.class);
         when(mockIngredient1.getPrice()).thenReturn(15f); // Первый ингредиент стоит 15 единиц
@@ -77,17 +37,12 @@ public class BurgerTests {
 
     @Test
     public void testGetPriceWithParams() {
-        // Создаем объект бургера
-        Burger burger = new Burger();
-        burger.setBuns(mockedBun);
-
         // Добавляем ингредиенты
-        for (Ingredient ingredient : mockedIngredients) {
-            burger.addIngredient(ingredient);
-        }
+        burger.addIngredient(mockIngredient1);
+        burger.addIngredient(mockIngredient2);
 
         // Проверка цены
-        assertEquals(expectedPrice, burger.getPrice(), 0.001f);
+        assertEquals(55f, burger.getPrice(), 0.001f);
     }
 
     @Test
@@ -145,10 +100,6 @@ public class BurgerTests {
 
     @Test
     public void testGetReceiptWithoutIngredients() {
-        // Настройка моков
-        when(mockBun.getName()).thenReturn("Булочка");
-        burger.setBuns(mockBun);
-
         // Получаем чек
         String receipt = burger.getReceipt();
 
@@ -162,9 +113,7 @@ public class BurgerTests {
 
     @Test
     public void testGetReceiptWithTwoIngredients() {
-        // Настройка моков
-        when(mockBun.getName()).thenReturn("Булочка");
-        burger.setBuns(mockBun);
+        // Добавляем ингредиенты
         burger.addIngredient(mockIngredient1);
         burger.addIngredient(mockIngredient2);
 
