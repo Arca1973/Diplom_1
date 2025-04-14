@@ -40,6 +40,10 @@ public class Burger {
         return price;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
     public String getReceipt() {
         StringBuilder receipt = new StringBuilder(String.format("(==== %s ====)%n", bun.getName()));
 
